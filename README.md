@@ -6,6 +6,8 @@ A small **Castle of the Winds**-style roguelike that runs entirely in your brows
 
 It is a single static page with no build step and no dependencies. It installs as a PWA (works offline, phone-friendly) and autosaves to your browser.
 
+Looking for the rules, spells, gear tables and bestiary? See the [Manual](#manual).
+
 ## Install on your phone
 
 Open the link above in Chrome on Android, then use the menu → **Install app** (or **Add to Home screen**). Visit once online so the files are cached; after that it plays offline.
@@ -26,6 +28,126 @@ Open the link above in Chrome on Android, then use the menu → **Install app** 
 - **Spells** unlock as you level: Missile (1), Heal (2), Blink (4), Chain Bolt (6).
 - **Scroll of Town Portal:** read in the Keep to jump home; read in the village to return to the depth you left.
 - **Death is permanent.** There is one save slot (browser `localStorage`).
+
+## Manual
+
+Direct link: <a href="https://github.com/adambeltz2/Keep-of-the-Gales#manual" target="_blank" rel="noopener">Full manual</a> (also reachable in game from **Menu → Full manual**).
+
+### Goal
+
+The wells of Windhallow have run dry and the nights howl. Buy gear, descend the **Keep of the Gales** (8 levels), and kill the **Gale Wyrm** waiting on depth 8. Killing it wins the game; you can keep playing afterwards. There is one hero and one save slot, and death is permanent.
+
+### The turn system
+
+The game is turn-based: nothing moves until you act. Moving, attacking, waiting, casting, quaffing, equipping and using scrolls each take one turn. Opening the pack, shops and menus is free. Every 7 turns you regain 1 HP and every 5 turns 1 MP.
+
+### Controls
+
+| Action | Touch | Keyboard |
+| --- | --- | --- |
+| Move / attack | Tap an adjacent tile, or the d-pad | Arrows, WASD, vi-keys (`h j k l y u b n`), numpad |
+| Auto-walk | Tap any explored tile; walking stops when an awake monster is in view or you are hit | - |
+| Wait a turn | `Wait`, or the centre d-pad button | `.` or `Space` |
+| Cast a spell | Spell buttons under the map | `1`-`4` |
+| Open pack | `Pack` | `I` |
+| Quaff best-fit healing potion | `Quaff` | `Q` |
+| Use stairs | `Stairs`, or walk onto them | `>` / `<` |
+| Menu (how to play, manual, new game) | `Menu` | - |
+| Close a window | ✕ | `Esc` |
+
+Moving into a monster attacks it. Moving into a shop door opens that shop. Tapping the tile you stand on uses stairs or waits.
+
+### Your hero
+
+- **Level-ups:** you need `10 x L^2 + 20 x L` total XP to leave level `L` (30 XP for level 2). Each level gives +8 max HP, +3 max MP, +1 Strength, +1 Magic, plus a small free heal (10 HP, 5 MP).
+- **Melee damage:** weapon damage + the weapon's enchantment + `floor((Strength - 10) / 3)`. You hit 85% of the time.
+- **Armor:** armor and shield values add up. Each time a monster hits you, damage is reduced by a random amount from 0 up to your total armor (minimum 1 damage).
+- **Pack:** holds 24 items. Equipment slots: weapon, armor, shield (not counted in the 24).
+
+### Spells
+
+| Key | Spell | Learned | MP | Effect |
+| --- | --- | --- | --- | --- |
+| 1 | Missile | level 1 | 3 | Hits the nearest visible monster for `4 + Magic/2 + 0-4` |
+| 2 | Heal | level 2 | 5 | Restores `10 + Magic` HP |
+| 3 | Blink | level 4 | 4 | Teleports you to a random spot 3-7 tiles away |
+| 4 | Chain Bolt | level 6 | 9 | Hits up to 3 visible monsters for `8 + Magic/2 + 0-6` each |
+
+Spell buttons appear as you learn them; the key number is the button's position. A spell needs enough MP and (for attacks) a visible target within about 8 tiles, otherwise no mana is spent.
+
+### The village of Windhallow
+
+Doors carry a sign: **W** Harrow's Smithy (weapons), **A** Iron Sparrow Armory (armor and shields), **P** Mistmoor Alchemist (potions and scrolls), **+** Temple of the Quiet Wind (heals all HP and MP for `10 + 5 x level` gold). Shops pay **one third** of an item's value and only buy their own kind of goods. Enchanted items (`+1`, `+2`...) are worth more. Magic scrolls fizzle in the village, except Town Portal.
+
+The staircase at the bottom of the village leads down into the Keep.
+
+### The Keep
+
+Levels are generated fresh the first time you enter them, then remembered. You see 8 tiles in line of sight; explored tiles stay on the map. Stairs `>` go down, `<` go up. Monsters get tougher with depth. Many start asleep: they can wake each turn you stand within about 4 tiles, and always wake when you attack them. Fast monsters (jackals, dire wolves) act twice per turn.
+
+### Gear
+
+| Weapon | Damage | Price |
+| --- | --- | --- |
+| Dagger | 2-4 | 20 |
+| Short Sword | 3-6 | 60 |
+| Hand Axe | 4-8 | 120 |
+| Long Sword | 5-10 | 220 |
+| War Hammer | 6-13 | 360 |
+| Battle Axe | 8-15 | 550 |
+| Broadsword | 10-18 | 800 (found only) |
+| Windblade | 12-22 | 1200 (found only) |
+
+| Armor | Value | Price | | Shield | Value | Price |
+| --- | --- | --- | --- | --- | --- | --- |
+| Cloth Tunic | 1 | 15 | | Buckler | 1 | 30 |
+| Leather Armor | 2 | 50 | | Round Shield | 2 | 80 |
+| Studded Leather | 3 | 110 | | Kite Shield | 3 | 180 |
+| Chain Mail | 5 | 240 | | Tower Shield | 5 | 400 |
+| Scale Mail | 7 | 420 | | | | |
+| Plate Armor | 9 | 700 | | | | |
+| Gale Plate | 12 | 1100 (found only) | | | | |
+
+| Consumable | Effect | Price |
+| --- | --- | --- |
+| Potion of Healing | +30 HP | 30 |
+| Potion of Greater Healing | +80 HP | 90 |
+| Potion of Mana | +20 MP | 40 |
+| Scroll of Town Portal | In the Keep: jump to the village. In the village: return to the depth you left | 60 |
+| Scroll of Magic Mapping | Reveals the whole level | 50 |
+| Scroll of Teleport | Moves you to a random floor tile | 40 |
+
+`Quaff` (or `Q`) drinks the smallest healing potion that covers the HP you are missing, or your biggest one if none does.
+
+### Bestiary
+
+| Monster | First seen | Notes |
+| --- | --- | --- |
+| Giant Rat, Kobold | depth 1 | Weak; good XP for a new hero |
+| Jackal | depth 1 | Fast: two actions per turn |
+| Goblin | depth 2 | |
+| Giant Spider, Skeleton | depth 3 | |
+| Orc | depth 4 | |
+| Dire Wolf | depth 4 | Fast |
+| Ogre | depth 5 | Heavy hitter |
+| Wraith, Troll | depth 6 | |
+| Stone Golem | depth 7 | 85 HP |
+| **Gale Wyrm** | depth 8 | Boss, 200 HP. Starts asleep. Breathes a howling gale every few turns from up to 6 tiles away (8-14 damage, reduced by half your armor) and bites hard in melee |
+
+Monsters drop gold, and sometimes items. Gold and items on the floor are picked up by walking over them (a full pack leaves the item behind).
+
+### Tips
+
+- Spend your starting 100 gold on armor first. Leather Armor (50) plus a Buckler (30) makes depth 1 much safer.
+- Fight in corridors so only one monster can reach you.
+- Always carry a **Scroll of Town Portal**: read it when hurt, heal and shop, read another to return exactly where you left.
+- Sell weapons and armor you have outgrown to fund potions.
+- Before depth 8, have 4+ healing potions, a heavy armor set, and at least level 8.
+- Chain Bolt is the best answer to packs; Heal costs a turn, so use it between fights, not during a brawl.
+
+### Saving and resetting
+
+The game autosaves after every turn in this browser (local storage). Clearing site data deletes the save. **Menu → New Game** abandons the current hero.
 
 ## Run locally
 
@@ -55,7 +177,7 @@ Scenarios (deterministic seeded RNG where outcomes depend on chance):
 | Levels | LVL-01..04 | stairs round-trip; every level 1–8 connected and sanely populated across many seeds; depth-appropriate monsters; levels persist |
 | Combat | CMB-01..08 | kills and XP, level-ups and spell unlocks, every spell, armor, sleeping/awake AI, death and restart, **winning the game** |
 | Items | ITM-01..07 | potions, pickup / drop / full pack, Town Portal both ways, mapping, teleport |
-| UI | UI-01..05 | keyboard, click-to-walk (and stopping for hostiles), touch controls, HUD and log, menu |
+| UI | UI-01..06 | keyboard, click-to-walk (and stopping for hostiles), touch controls, HUD and log, menu, manual link |
 | Saves | SAV-01..04 | exact reload round-trip, corrupt or old saves, no-`localStorage` mode, new game |
 | Soak | SOAK-01 | 50 random games × 1200 actions: no exceptions, no player-in-wall, stats in range |
 

@@ -472,6 +472,19 @@ test('UI-05 how-to-play modal can be reopened from the menu', async () => {
   eq(await ev(page, () => $('#mtitle').textContent), 'How to play'); await done(page);
 });
 
+test('UI-06 Menu has a Full manual button that opens the README manual in a new tab; help modal links to it', async () => {
+  const page = await freshPage();
+  await ev(page, () => { window.__opened = []; window.open = (...a) => { window.__opened.push(a); return null; }; });
+  await page.click('#bar button[data-b=menu]'); await page.click('#mbody [data-a=manual]');
+  const opened = await ev(page, () => window.__opened);
+  eq(opened.length, 1); assert(/github\.com\/adambeltz2\/Keep-of-the-Gales#manual$/.test(opened[0][0]), opened[0][0]); eq(opened[0][1], '_blank');
+  await ev(page, () => showHelp());
+  const a = await ev(page, () => { const l = document.querySelector('#mbody a'); return l && [l.href, l.target, l.rel]; });
+  assert(a && /#manual$/.test(a[0]) && a[1] === '_blank' && /noopener/.test(a[2]), JSON.stringify(a));
+  const readme = fs.readFileSync(path.join(ROOT, 'README.md'), 'utf8'); assert(/^## Manual$/m.test(readme), 'README is missing the "## Manual" heading the link targets');
+  await done(page);
+});
+
 /* ------------------------------------------------------------------ persistence */
 
 test('SAV-01 state survives a reload exactly (position, depth, gold, items, explored map)', async () => {
