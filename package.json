@@ -1,0 +1,13 @@
+{
+  "name": "keep-of-the-gales",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Castle of the Winds-style roguelike, a single-page PWA",
+  "scripts": {
+    "start": "node tests/serve.cjs",
+    "test": "node tests/regression.test.cjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.56.0"
+  }
+}

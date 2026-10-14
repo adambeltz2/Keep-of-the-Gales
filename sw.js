@@ -1,5 +1,10 @@
-const CACHE = 'keep-of-the-gales-v1';
-const FILES = ['./', 'index.html', 'manifest.json', 'icon.svg'];
+// Bump CACHE whenever the shipped files change so old caches are purged.
+const CACHE = 'keep-of-the-gales-v2';
+const FILES = [
+  './', 'index.html', 'manifest.json',
+  'icon.svg', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png',
+  'apple-touch-icon.png', 'favicon.ico'
+];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));
@@ -13,16 +18,23 @@ self.addEventListener('activate', e => {
   );
 });
 
-// Network first so updates show up, falling back to cache when offline.
+// Network first so updates show up; fall back to cache when offline.
 self.addEventListener('fetch', e => {
-  if (e.request.method !== 'GET') return;
+  const req = e.request;
+  if (req.method !== 'GET' || new URL(req.url).origin !== self.location.origin) return;
   e.respondWith(
-    fetch(e.request)
+    fetch(req)
       .then(res => {
-        const copy = res.clone();
-        caches.open(CACHE).then(c => c.put(e.request, copy));
+        if (res.ok) {
+          const copy = res.clone();
+          caches.open(CACHE).then(c => c.put(req, copy));
+        }
         return res;
       })
-      .catch(() => caches.match(e.request))
+      .catch(() =>
+        caches.match(req, { ignoreSearch: true }).then(hit =>
+          hit || (req.mode === 'navigate' ? caches.match('index.html') : Response.error())
+        )
+      )
   );
 });

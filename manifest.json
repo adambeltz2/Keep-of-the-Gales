@@ -1,13 +1,19 @@
 {
+  "id": "./",
   "name": "Keep of the Gales",
   "short_name": "Gales",
+  "description": "A Castle of the Winds-style roguelike. Delve the Keep, slay the Gale Wyrm.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait",
+  "orientation": "any",
   "background_color": "#0d0f14",
   "theme_color": "#0d0f14",
+  "categories": ["games"],
   "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
     { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
   ]
 }
