@@ -2,7 +2,7 @@
 
 A small **Castle of the Winds**-style roguelike that runs entirely in your browser. Shop in the village of Windhallow, descend eight levels of the Keep, level up, learn spells, and slay the **Gale Wyrm**.
 
-**▶ Play it: https://adambeltz2.github.io/Keep-of-the-Gales/**
+**▶ Play it: <a href="https://adambeltz2.github.io/Keep-of-the-Gales/" target="_blank" rel="noopener">https://adambeltz2.github.io/Keep-of-the-Gales/</a>**
 
 It is a single static page with no build step and no dependencies. It installs as a PWA (works offline, phone-friendly) and autosaves to your browser.
 
@@ -35,7 +35,7 @@ npm start          # serves http://localhost:8080  (a service worker needs http,
 
 ## Tests
 
-Regression tests drive the real page in headless Chromium via [Playwright](https://playwright.dev/).
+Regression tests drive the real page in headless Chromium via <a href="https://playwright.dev/" target="_blank" rel="noopener">Playwright</a>.
 
 ```sh
 npm install
@@ -61,7 +61,7 @@ Scenarios (deterministic seeded RNG where outcomes depend on chance):
 
 ## Files
 
-`index.html` is the whole game. `sw.js` and `manifest.json` provide offline play and installability; `icon*.png/svg`, `apple-touch-icon.png` and `favicon.ico` are the icons. When you change any shipped file, bump `CACHE` in `sw.js` so installed copies refresh.
+`CLAUDE.md` holds the agent/contributor rules and `backlog.md` the deferred ideas. `index.html` is the whole game. `sw.js` and `manifest.json` provide offline play and installability; `icon*.png/svg`, `apple-touch-icon.png` and `favicon.ico` are the icons. When you change any shipped file, bump `CACHE` in `sw.js` so installed copies refresh.
 
 ## Deploying
 
