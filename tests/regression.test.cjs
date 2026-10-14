@@ -496,6 +496,39 @@ test('UI-06 Menu -> Full manual opens the local manual page, which has a back li
   await done(page);
 });
 
+/* ------------------------------------------------------------------ sprites */
+
+test('SPR-01 every monster type has a well-formed, distinct 16x16 sprite with eyes', async () => {
+  const page = await freshPage();
+  const r = await ev(page, () => { const bad = [], seen = new Set();
+    for (const m of MON) { const d = SPR[m.n]; if (!d) { bad.push('no sprite for ' + m.n); continue; }
+      if (d.rows.length !== 16) bad.push(m.n + ': rows != 16');
+      d.rows.forEach((row, y) => { if (row.length !== 8) bad.push(`${m.n} row ${y}: width ${row.length}`);
+        for (const ch of row) if (ch !== '.' && !d.pal[ch]) bad.push(`${m.n}: unknown palette key ${ch}`); });
+      for (const [k, v] of Object.entries(d.pal)) if (!/^#[0-9a-f]{6}$/i.test(v)) bad.push(`${m.n}: bad colour ${k}=${v}`);
+      if (!d.rows.join('').includes('e')) bad.push(m.n + ': no eyes');
+      const sig = d.rows.join('|') + JSON.stringify(d.pal); if (seen.has(sig)) bad.push(m.n + ': duplicate sprite'); seen.add(sig);
+      const c = sprite(m.n); if (!c || c.width !== 16 || c.height !== 16) bad.push(m.n + ': sprite canvas'); }
+    for (const n of Object.keys(SPR)) if (!MON.some(m => m.n === n)) bad.push('orphan sprite ' + n);
+    return bad; });
+  eq(r, []); await done(page);
+});
+
+test('SPR-02 each monster is drawn on the map with its own sprite colours (not the old letter glyph); unknown types fall back safely', async () => {
+  const page = await freshPage();
+  const r = await ev(page, () => { enter(1, 'top'); const L = cur(); L.mons.length = 0; L.t[G.p.y * L.w + G.p.x + 1] = T.FLOOR; computeFov();
+    const out = { missing: [], fallbackOk: false };
+    const tile = () => { const vx = G.p.x + 1 - G.cam.cx, vy = G.p.y - G.cam.cy; return ctx.getImageData(vx * TS, vy * TS, TS, TS).data; };
+    const has = (data, hex) => { const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+      for (let i = 0; i < data.length; i += 4) if (data[i] === r && data[i + 1] === g && data[i + 2] === b) return true; return false; };
+    for (const def of MON) { L.mons.length = 0; const m = spawn(def, G.p.x + 1, G.p.y); m.sleep = true; L.mons.push(m); draw();
+      const d = tile(); if (!has(d, SPR[def.n].pal.e) || !has(d, SPR[def.n].pal.k)) out.missing.push(def.n); }
+    L.mons.length = 0; const odd = spawn(MON[0], G.p.x + 1, G.p.y); odd.n = 'Nonesuch'; L.mons.push(odd);
+    try { draw(); out.fallbackOk = true; } catch (e) { out.err = String(e); }
+    return out; });
+  eq(r.missing, []); assert(r.fallbackOk, r.err); await done(page);
+});
+
 /* ------------------------------------------------------------------ persistence */
 
 test('SAV-01 state survives a reload exactly (position, depth, gold, items, explored map)', async () => {

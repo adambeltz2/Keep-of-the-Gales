@@ -134,6 +134,8 @@ Levels are generated fresh the first time you enter them, then remembered. You s
 | Stone Golem | depth 7 | 85 HP |
 | **Gale Wyrm** | depth 8 | Boss, 200 HP. Starts asleep. Breathes a howling gale every few turns from up to 6 tiles away (8-14 damage, reduced by half your armor) and bites hard in melee |
 
+Each monster type has its own picture, and its colours hint at the danger: dull browns and greens are weak, while bright, glowing-eyed, red-eyed and golden-horned foes are the ones to respect. The Gale Wyrm glows with a pale blue aura.
+
 Monsters drop gold, and sometimes items. Gold and items on the floor are picked up by walking over them (a full pack leaves the item behind).
 
 ### Tips
@@ -178,6 +180,7 @@ Scenarios (deterministic seeded RNG where outcomes depend on chance):
 | Combat | CMB-01..08 | kills and XP, level-ups and spell unlocks, every spell, armor, sleeping/awake AI, death and restart, **winning the game** |
 | Items | ITM-01..07 | potions, pickup / drop / full pack, Town Portal both ways, mapping, teleport |
 | UI | UI-01..06 | keyboard, click-to-walk (and stopping for hostiles), touch controls, HUD and log, menu, manual link and back link |
+| Sprites | SPR-01..02 | every monster type has a well-formed distinct sprite; each is drawn on the map with its own colours, unknown types fall back to a letter |
 | Saves | SAV-01..04 | exact reload round-trip, corrupt or old saves, no-`localStorage` mode, new game |
 | Soak | SOAK-01 | 50 random games × 1200 actions: no exceptions, no player-in-wall, stats in range |
 

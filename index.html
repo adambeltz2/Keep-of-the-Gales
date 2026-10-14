@@ -98,6 +98,44 @@ const MON=[
 {n:'Stone Golem',c:'G',col:'#aaa',hp:85,a:7,b:15,xp:115,d:7},
 {n:'Gale Wyrm',c:'D',col:'#4df',hp:200,a:8,b:18,xp:600,d:8,boss:1,breath:1}
 ];
+/* ---------- monster sprites: 16x16 pixel art, left half authored, right half mirrored; drawn at 2x ---------- */
+/* Colours escalate with danger: dull browns and greens early, bright reds and glowing eyes deep down. */
+const SPR={
+ "Giant Rat":{pal:{"k":"#2b1d14","1":"#6b5238","2":"#9a7b5c","3":"#c4a483","p":"#e8a0a0","e":"#ff3b3b","w":"#ffffff"},
+  rows:["........",".kkk....","kpppk...","kppp2k..","kpp222kk",".k222222",".k222222",".k22ee22",".k22ek22",".k222222","kk22233p","k.k22222",".k222kww","..k2222k","...kkkkk","........"]},
+ "Jackal":{pal:{"k":"#3a2410","1":"#7a5424","2":"#d29a45","3":"#f4d794","e":"#fff39a","w":"#ffffff","n":"#141010"},
+  rows:[".k......","k2k.....","k22k....","k222k...","k2222k..",".k222222",".k222222",".k2ee222",".k22k222","..k22222","..k33333","..k3333n","..k33kww","...k3333","....kkkk","........"]},
+ "Kobold":{pal:{"k":"#1f3220","1":"#3d5a3a","2":"#6f9a5f","3":"#a8cf8f","e":"#ffe34d","h":"#e0d2a8","w":"#ffffff","n":"#101010"},
+  rows:["..h.....","..hk....",".kkkkkkk",".k222222","k2222222","k222e222","k222ek22","k2222222",".k223333",".k22333n","..k2k33k","..k2wkwk","..kk2222","...k1111","....kkkk","........"]},
+ "Goblin":{pal:{"k":"#14301a","1":"#2f6b2f","2":"#4fae4f","3":"#8fe08f","e":"#ffdf30","w":"#ffffff","n":"#103010"},
+  rows:["k.......","k2k.....","k22kkkk.","kk222222",".k222222",".k222222",".k2ee222",".k2ek222",".k222222",".k223333",".k2233nn",".k2kkkkk",".k2wkwkw","..kk2222","....kkkk","........"]},
+ "Giant Spider":{pal:{"k":"#1a0c24","1":"#4a1f5a","2":"#8a3fb0","3":"#c27ae8","e":"#ff3030","w":"#f0e8ff"},
+  rows:["........","k.......",".k..kkkk","..k.k222","k.kk2e2e",".k2222ee","..k22222","kk.k2222",".k.k3223","..kk3223","k.k.2222",".k.k2222","..k.k222","k...kk22",".....kkk","........"]},
+ "Skeleton":{pal:{"k":"#14141c","1":"#a8a08a","2":"#ece8d6","3":"#ffffff","e":"#7ff0ff","v":"#10101a"},
+  rows:["........","...kkkkk","..k22222",".k222222",".k222222",".kvvv222",".kvev222",".kvvv222",".k222222","..k22vv2","..k2222k","..k1111v","..kvkvkv","..k1111k","...kkkkk","........"]},
+ "Orc":{pal:{"k":"#1a2410","1":"#3a4a1e","2":"#7a9a3a","3":"#b5d060","e":"#ff5a2a","w":"#fffbe0","m":"#5a3a20","n":"#101010"},
+  rows:["........","..kkkkkk",".kmmmmmm",".km22222","kk222222","k1111111","k1111111","k2ee2222","k22k2222",".k223333",".k2k22kn",".kwk22kk",".kwk2222","..kk1111","....kkkk","........"]},
+ "Dire Wolf":{pal:{"k":"#141a28","1":"#3a4458","2":"#7d8aa8","3":"#c8d2e8","e":"#ffd23a","w":"#ffffff","n":"#0c0c12"},
+  rows:[".kk.....","k22k....","k222kk..","k2222k2k","k22222k2",".k222222",".k222222",".k2ee222",".k2ek222","..k22222","..k33333","..k3333n",".kk3kkkk",".kwkwk33","..kk3333","...kkkkk"]},
+ "Ogre":{pal:{"k":"#2c0e06","1":"#7a2f14","2":"#d9703a","3":"#f5a46a","e":"#fff070","w":"#fffbe0","h":"#3a2010"},
+  rows:["........","..khhhhh",".khhhhhh",".kh22222","kk222222","k1111111","k22ee222","k222k222","k2222222",".k222233",".k22k3kk","kwk2kkkk","kwk22222",".kk22222","..kkkkkk","........"]},
+ "Wraith":{pal:{"k":"#0b1a2e","1":"#1d3550","2":"#3f78b0","3":"#9ad0ff","e":"#f0ffff","v":"#04070d"},
+  rows:["........","...kkkkk","..k22222",".k222222",".k233333",".k3vvvvv",".k3vvevv",".k3vvevv",".k3vvvvv",".k233vvv",".k222233","k2222222","k2222222","k.k2k2k2","...k.k.k","........"]},
+ "Troll":{pal:{"k":"#0e2410","1":"#1d4a22","2":"#3f9a44","3":"#78d070","e":"#ff3030","w":"#fffbe0","m":"#6a8a2a"},
+  rows:["..mm.mmm",".kmmmmmm",".kmmmmmm",".k222222","k1111111","k22ee222","k222k222","k2222222","kk222222",".k222233",".k2k2kkk",".kwk2kkk",".kwk2222","..kk2222","...kkkkk","........"]},
+ "Stone Golem":{pal:{"k":"#202028","1":"#4a4a52","2":"#8a8a96","3":"#c4c4d0","e":"#ffa030","m":"#ff7a10"},
+  rows:["........","kkkkkkkk","k3333333","k3222222","k2222222","k2eee222","k2eme222","k2222222","k22k1222","k22k1222","k2222k22","k2222k22","k1111111","kkkkkkkk","........","........"]},
+ "Gale Wyrm":{pal:{"k":"#06222e","1":"#146e8c","2":"#3ec6e8","3":"#9dddff","e":"#ffd84a","h":"#e8dcc0","s":"#b8a888","w":"#ffffff","v":"#0a0a0e"},
+  rows:["h.......","hhh.....",".hhk....",".kskk...","..k2kkkk","..k22333",".k112222",".k1eev22",".k11e222",".k112222","..k22222","..k2v2v2","..kk2222","..kwkw22","...kkkkk","........"]}
+};
+const SPRC={};
+function sprite(name){
+ if(name in SPRC)return SPRC[name];
+ const d=SPR[name];if(!d)return SPRC[name]=null;
+ const c=document.createElement('canvas');c.width=c.height=16;const x=c.getContext('2d');
+ d.rows.forEach((row,y)=>{for(let i=0;i<8;i++){const ch=row[i];if(ch==='.')continue;x.fillStyle=d.pal[ch];x.fillRect(i,y,1,1);x.fillRect(15-i,y,1,1);}});
+ return SPRC[name]=c;
+}
 const CAT={
  w:[{name:'Dagger',min:2,max:4,price:20},{name:'Short Sword',min:3,max:6,price:60},{name:'Hand Axe',min:4,max:8,price:120},{name:'Long Sword',min:5,max:10,price:220},{name:'War Hammer',min:6,max:13,price:360},{name:'Battle Axe',min:8,max:15,price:550},{name:'Broadsword',min:10,max:18,price:800},{name:'Windblade',min:12,max:22,price:1200}],
  a:[{name:'Cloth Tunic',ar:1,price:15},{name:'Leather Armor',ar:2,price:50},{name:'Studded Leather',ar:3,price:110},{name:'Chain Mail',ar:5,price:240},{name:'Scale Mail',ar:7,price:420},{name:'Plate Armor',ar:9,price:700},{name:'Gale Plate',ar:12,price:1100}],
@@ -317,8 +355,15 @@ function draw(){
  }
  for(const m of L.mons){
   const vx=m.x-cx,vy=m.y-cy;if(vx<0||vy<0||vx>=VW||vy>=VH||!vis[m.y*L.w+m.x])continue;
-  ctx.fillStyle='rgba(0,0,0,.55)';ctx.beginPath();ctx.arc(vx*TS+TS/2,vy*TS+TS/2,13,0,7);ctx.fill();
-  glyph(m.c,m.col,vx*TS,vy*TS,m.boss?28:22);
+  const sp=sprite(m.n);
+  if(sp){
+   if(m.boss){const g=ctx.createRadialGradient(vx*TS+TS/2,vy*TS+TS/2,4,vx*TS+TS/2,vy*TS+TS/2,22);g.addColorStop(0,'rgba(120,220,255,.55)');g.addColorStop(1,'rgba(120,220,255,0)');ctx.fillStyle=g;ctx.fillRect(vx*TS-8,vy*TS-8,TS+16,TS+16);}
+   ctx.fillStyle='rgba(0,0,0,.35)';ctx.beginPath();ctx.ellipse(vx*TS+TS/2,vy*TS+TS-3,11,3,0,0,7);ctx.fill();
+   ctx.imageSmoothingEnabled=false;ctx.drawImage(sp,vx*TS,vy*TS,TS,TS);
+  }else{
+   ctx.fillStyle='rgba(0,0,0,.55)';ctx.beginPath();ctx.arc(vx*TS+TS/2,vy*TS+TS/2,13,0,7);ctx.fill();
+   glyph(m.c,m.col,vx*TS,vy*TS,m.boss?28:22);
+  }
   if(m.hp<m.mhp){ctx.fillStyle='#400';ctx.fillRect(vx*TS+4,vy*TS+TS-5,TS-8,3);ctx.fillStyle='#d44';ctx.fillRect(vx*TS+4,vy*TS+TS-5,(TS-8)*m.hp/m.mhp,3);}
   if(m.sleep)glyph('z','#9cf',vx*TS+10,vy*TS-10,12);
  }
