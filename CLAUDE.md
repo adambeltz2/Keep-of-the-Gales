@@ -39,6 +39,6 @@ Act as a senior software engineer and technical investigator. Optimize for corre
 *   **Tests Gate Deploys:** Run `npm test` and require all scenarios to pass before pushing to `main`. Add or update a scenario in `tests/regression.test.cjs` for every behavior change or bug fix, using the existing ID scheme (PWA, NEW, SHOP, LVL, CMB, ITM, UI, SPR, SAV, SOAK) and update the scenario table in `README.md`.
 *   **Original Content Only:** Do not use Castle of the Winds assets, names, text, or art. Monsters, items, and story are original.
 *   **Phone-First UI:** Every feature must work by touch alone (no keyboard-only actions), with no horizontal page scroll at 360px width.
-*   **Sprites:** Monster pictures live in the `SPR` table in `index.html` (16x16, left half authored, right half mirrored). Every new monster in `MON` needs a sprite, and its colours should reflect its power tier.
+*   **Sprites:** All map graphics are 16x16 pixel art in `index.html` (left half authored, right half mirrored, drawn at 2x): monsters in `SPR`, everything else (hero, items, stairs, shop signs) in `ART`. Every new monster in `MON` needs a sprite, every new item in `CAT` needs a `TIER` colour, and colours should reflect power. Do not draw letters or numbers on the map; letters are only the fallback for unknown monsters.
 *   **Single File:** Keep game code inside `index.html`; do not split it into modules or add a build step.
 *   **Deploy:** Pushing to `main` deploys. Keep `README.md` (live link, controls, test table) in sync with behavior.

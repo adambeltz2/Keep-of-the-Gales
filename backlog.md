@@ -6,7 +6,6 @@ Format: `[BUG]` | `[FEATURE]` | `[REFACTOR]` | `[DEBT]` followed by a concise de
 [BUG] Monsters chase with a greedy "step closer" rule, so they can get stuck behind walls and corners instead of pathing around them. Affected: index.html (stepToward, monstersAct).
 [FEATURE] Rest command (rest until healed or a monster appears) and auto-explore; walking back to full HP is tedious on a phone. Affected: index.html (input, endTurn), README manual, manual.html.
 [FEATURE] Look/inspect: tap-and-hold a monster, item or tile to see its name, HP and stats. Affected: index.html (onTap, draw).
-[FEATURE] Pixel sprites for the hero, items, stairs and doors (monsters are done); the hero is still an @ and items are letter glyphs. Reuse the champion drawing in tools/make-icons.py. Affected: index.html (draw, SPR).
 [FEATURE] Sound effects and music with a mute setting. Affected: index.html.
 [FEATURE] More equipment slots (helm, boots, gloves, rings, amulet) and wands/rings as loot. Affected: index.html (CAT, eq, pack UI), README manual.
 [FEATURE] Monster variety: archers and casters, poison/slow/paralysis, resistances, and packs that flank. Affected: index.html (MON, monstersAct).

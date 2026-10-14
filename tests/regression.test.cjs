@@ -498,7 +498,7 @@ test('UI-06 Menu -> Full manual opens the local manual page, which has a back li
 
 /* ------------------------------------------------------------------ sprites */
 
-test('SPR-01 every monster type has a well-formed, distinct 16x16 sprite with eyes', async () => {
+test('SPR-01 every monster type has a well-formed, distinct 16x16 sprite with eyes; all art tables are valid', async () => {
   const page = await freshPage();
   const r = await ev(page, () => { const bad = [], seen = new Set();
     for (const m of MON) { const d = SPR[m.n]; if (!d) { bad.push('no sprite for ' + m.n); continue; }
@@ -510,6 +510,12 @@ test('SPR-01 every monster type has a well-formed, distinct 16x16 sprite with ey
       const sig = d.rows.join('|') + JSON.stringify(d.pal); if (seen.has(sig)) bad.push(m.n + ': duplicate sprite'); seen.add(sig);
       const c = sprite(m.n); if (!c || c.width !== 16 || c.height !== 16) bad.push(m.n + ': sprite canvas'); }
     for (const n of Object.keys(SPR)) if (!MON.some(m => m.n === n)) bad.push('orphan sprite ' + n);
+    for (const n of ['hero', 'sword', 'tunic', 'shield', 'potion', 'scroll', 'coins', 'stair_down', 'stair_up', 'sign_swords', 'sign_cross']) {
+      const d = ART[n]; if (!d) { bad.push('no art ' + n); continue; }
+      if (d.rows.length !== 16 || d.rows.some(r => r.length !== 8)) bad.push(n + ': bad grid');
+      for (const row of d.rows) for (const ch of row) if (ch !== '.' && !d.pal[ch]) bad.push(`${n}: unknown key ${ch}`); }
+    for (const k of Object.keys(CAT)) CAT[k].forEach((c, i) => { if (!TIER[k] || !TIER[k][i]) bad.push(`no tier colour for ${k}${i}`); else if (!itemSprite({ k, i, b: 0 })) bad.push(`no sprite for ${k}${i}`); });
+    for (const k of Object.keys(SHOPINFO)) if (!SIGN[k] || !sprite(SIGN[k][0], SIGN[k][1])) bad.push('no sign for ' + k);
     return bad; });
   eq(r, []); await done(page);
 });
@@ -527,6 +533,39 @@ test('SPR-02 each monster is drawn on the map with its own sprite colours (not t
     try { draw(); out.fallbackOk = true; } catch (e) { out.err = String(e); }
     return out; });
   eq(r.missing, []); assert(r.fallbackOk, r.err); await done(page);
+});
+
+test('SPR-03 hero, items, gold, stairs and shop signs are drawn as pictures; higher-tier gear looks different', async () => {
+  const page = await freshPage();
+  const r = await ev(page, () => { const out = []; const has = (data, hex) => { const rr = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+      for (let i = 0; i < data.length; i += 4) if (data[i] === rr && data[i + 1] === g && data[i + 2] === b) return true; return false; };
+    const tile = (x, y) => { const vx = x - G.cam.cx, vy = y - G.cam.cy; return ctx.getImageData(vx * TS, vy * TS, TS, TS).data; };
+    // hero
+    draw(); if (!has(tile(G.p.x, G.p.y), ART.hero.pal.y)) out.push('hero sprite not drawn');
+    // floor items next to the hero in the dungeon
+    enter(1, 'top'); const L = cur(); L.mons.length = 0; L.items.length = 0;
+    for (let dx = 1; dx <= 6; dx++) L.t[G.p.y * L.w + G.p.x + dx] = T.FLOOR;
+    const put = (dx, o) => L.items.push(Object.assign({ x: G.p.x + dx, y: G.p.y }, o));
+    put(1, { gold: 10 }); put(2, { item: { k: 'p', i: 2, b: 0 } }); put(3, { item: { k: 'w', i: 7, b: 1 } }); put(4, { item: { k: 'a', i: 6, b: 0 } }); put(5, { item: { k: 's', i: 3, b: 0 } }); put(6, { item: { k: 'c', i: 2, b: 0 } });
+    computeFov(); draw();
+    if (!has(tile(G.p.x + 1, G.p.y), ART.coins.pal.y)) out.push('gold');
+    if (!has(tile(G.p.x + 2, G.p.y), TIER.p[2].m)) out.push('mana potion colour');
+    if (!has(tile(G.p.x + 3, G.p.y), TIER.w[7].l)) out.push('windblade colour');
+    if (!has(tile(G.p.x + 3, G.p.y), '#9ff0ff')) out.push('enchant sparkle');
+    if (!has(tile(G.p.x + 4, G.p.y), TIER.a[6].m)) out.push('gale plate colour');
+    if (!has(tile(G.p.x + 5, G.p.y), TIER.s[3].m)) out.push('tower shield colour');
+    if (!has(tile(G.p.x + 6, G.p.y), TIER.c[2].m)) out.push('teleport scroll colour');
+    // stairs and shop signs in the village
+    enter(0, 'start'); draw(); const t = cur(); const dn = t.down;
+    G.p.x = dn.x; G.p.y = dn.y - 1; computeFov(); draw();
+    if (!has(tile(dn.x, dn.y), ART.stair_down.pal.e)) out.push('stair chevron');
+    for (const [k, kind] of Object.entries(t.shops)) { const [x, y] = k.split(',').map(Number); G.p.x = x; G.p.y = y + 1; computeFov(); draw();
+      const want = { smith: ART.sign_swords.pal.l, armor: TIER.s[3].m, alch: '#4adf7a', healer: ART.sign_cross.pal.r }[kind]; if (!has(tile(x, y), want)) out.push('sign ' + kind); }
+    return out; });
+  eq(r, []);
+  // different gear tiers get different sprite colours; icons appear in pack and shop lists
+  const icons = await ev(page, () => { G.p.inv = [{ k: 'w', i: 0, b: 0 }, { k: 'w', i: 7, b: 0 }]; openPack(); const imgs = document.querySelectorAll('#mbody img.ico').length; const a = itemSprite({ k: 'w', i: 0 }).toDataURL(), b = itemSprite({ k: 'w', i: 7 }).toDataURL(); openShop('smith'); return { imgs, differ: a !== b, shopImgs: document.querySelectorAll('#mbody img.ico').length }; });
+  assert(icons.imgs >= 3 && icons.differ && icons.shopImgs >= 6, JSON.stringify(icons)); await done(page);
 });
 
 /* ------------------------------------------------------------------ persistence */

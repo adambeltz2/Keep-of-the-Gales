@@ -24,7 +24,7 @@ Open the link above in Chrome on Android, then use the menu → **Install app** 
 | Use stairs | `Stairs` (or walk onto them) | `>` / `<` |
 | Close a window | ✕ | `Esc` |
 
-- **Village:** door signs mark the shops: `W` weapons, `A` armor, `P` potions and scrolls, `+` healing temple. Shops buy loot back at one third of its value. The staircase at the bottom of the map leads into the Keep.
+- **Village:** door signs mark the shops: crossed swords (weapons), a shield (armor), a green flask (potions and scrolls), a red cross (healing temple). Shops buy loot back at one third of its value. The staircase at the bottom of the map leads into the Keep.
 - **Spells** unlock as you level: Missile (1), Heal (2), Blink (4), Chain Bolt (6).
 - **Scroll of Town Portal:** read in the Keep to jump home; read in the village to return to the depth you left.
 - **Death is permanent.** There is one save slot (browser `localStorage`).
@@ -77,13 +77,30 @@ Spell buttons appear as you learn them; the key number is the button's position.
 
 ### The village of Windhallow
 
-Doors carry a sign: **W** Harrow's Smithy (weapons), **A** Iron Sparrow Armory (armor and shields), **P** Mistmoor Alchemist (potions and scrolls), **+** Temple of the Quiet Wind (heals all HP and MP for `10 + 5 x level` gold). Shops pay **one third** of an item's value and only buy their own kind of goods. Enchanted items (`+1`, `+2`...) are worth more. Magic scrolls fizzle in the village, except Town Portal.
+Doors carry a picture sign: crossed swords for Harrow's Smithy (weapons), a shield for the Iron Sparrow Armory (armor and shields), a green flask for Mistmoor Alchemist (potions and scrolls), and a red cross for the Temple of the Quiet Wind (heals all HP and MP for `10 + 5 x level` gold). Shops pay **one third** of an item's value and only buy their own kind of goods. Enchanted items (`+1`, `+2`...) are worth more. Magic scrolls fizzle in the village, except Town Portal.
 
 The staircase at the bottom of the village leads down into the Keep.
 
 ### The Keep
 
 Levels are generated fresh the first time you enter them, then remembered. You see 8 tiles in line of sight; explored tiles stay on the map. Stairs `>` go down, `<` go up. Monsters get tougher with depth. Many start asleep: they can wake each turn you stand within about 4 tiles, and always wake when you attack them. Fast monsters (jackals, dire wolves) act twice per turn.
+
+### Reading the map
+
+Everything on the map is a small picture; the same pictures appear next to items in your pack and in shops.
+
+| Picture | Meaning |
+| --- | --- |
+| Knight in a plumed helm | You |
+| Framed pit with a chevron pointing down / up | Stairs down / stairs up |
+| Gold coin pile | Gold |
+| Sword | A weapon (blade colour shows its quality: grey iron, steel, blue steel, gold, cyan for the best) |
+| Tunic | Body armor (cloth, leather, studded, chain, scale, plate, cyan Gale Plate) |
+| Shield | A shield (wood to steel) |
+| Flask | A potion: red = Healing, pink = Greater Healing, blue = Mana |
+| Scroll | A scroll: cyan seal = Town Portal, gold = Magic Mapping, purple = Teleport |
+| Small cyan sparkle on an item | It is enchanted (`+1` or better) |
+| Dark face or creature | A monster; its colours hint at its danger (see the bestiary). A blue `z` above it means it is asleep, and a red bar below it shows damage |
 
 ### Gear
 
@@ -180,7 +197,7 @@ Scenarios (deterministic seeded RNG where outcomes depend on chance):
 | Combat | CMB-01..08 | kills and XP, level-ups and spell unlocks, every spell, armor, sleeping/awake AI, death and restart, **winning the game** |
 | Items | ITM-01..07 | potions, pickup / drop / full pack, Town Portal both ways, mapping, teleport |
 | UI | UI-01..06 | keyboard, click-to-walk (and stopping for hostiles), touch controls, HUD and log, menu, manual link and back link |
-| Sprites | SPR-01..02 | every monster type has a well-formed distinct sprite; each is drawn on the map with its own colours, unknown types fall back to a letter |
+| Sprites | SPR-01..03 | every monster, item, stair, sign and hero picture is well-formed; each monster is drawn with its own colours (unknown types fall back to a letter); items, hero, stairs and shop signs render as pictures, and every item has a tier colour |
 | Saves | SAV-01..04 | exact reload round-trip, corrupt or old saves, no-`localStorage` mode, new game |
 | Soak | SOAK-01 | 50 random games × 1200 actions: no exceptions, no player-in-wall, stats in range |
 

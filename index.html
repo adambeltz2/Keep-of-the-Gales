@@ -42,6 +42,7 @@ button:active{background:#34405a}button:disabled{opacity:.4}
 .row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #222a3a}
 .row small{color:#8a96b0}.sum{color:#bcd;margin-bottom:4px}
 .row .b2{display:flex;gap:4px}
+.ico{width:24px;height:24px;image-rendering:pixelated;vertical-align:middle;margin-right:6px}
 </style>
 </head>
 <body>
@@ -128,14 +129,53 @@ const SPR={
  "Gale Wyrm":{pal:{"k":"#06222e","1":"#146e8c","2":"#3ec6e8","3":"#9dddff","e":"#ffd84a","h":"#e8dcc0","s":"#b8a888","w":"#ffffff","v":"#0a0a0e"},
   rows:["h.......","hhh.....",".hhk....",".kskk...","..k2kkkk","..k22333",".k112222",".k1eev22",".k11e222",".k112222","..k22222","..k2v2v2","..kk2222","..kwkw22","...kkkkk","........"]}
 };
+/* Non-monster art (hero, items, stairs, shop signs), same format. Item colours come from TIER, by item index. */
+const ART={
+ "hero":{pal:{"k":"#0c0e18","s":"#7a869e","l":"#c8d2e8","d":"#46506a","r":"#d63434","R":"#8c1c24","y":"#ffd84a"},
+  rows:["......rr",".....rRR","...kkkkk","..ksslll",".ksssssl",".kkkkkkk",".kyyyyyy",".kkkkkkk",".ksssssl",".ksdsdsd",".ksdsdsd",".kssssss","..kddddd","...kkkkk","........","........"]},
+ "sword":{pal:{"k":"#14161e","l":"#cfd4dc","g":"#d4a640","d":"#6b3a1e"},
+  rows:[".......k","......kl","......kl","......kl","......kl","......kl","......kl","......kl","......kl","..kggggg","..kkkkkd","......kd","......kd",".....kgg",".....kkk","........"]},
+ "tunic":{pal:{"k":"#14161e","m":"#8a5a30","l":"#b07a48","d":"#3a2a1a"},
+  rows:["........","..kkkk..",".kmmmmk.","kmllmmmm","kmlmmmmm","kkmmmmmm",".kmmmmmm",".kmmmmmm",".kdddddd",".kmmmmmm",".kmmmmmm",".kmmmmmm",".kkkkkkk","........","........","........"]},
+ "shield":{pal:{"k":"#14161e","m":"#8a5a30","l":"#b07a48","a":"#e0b040"},
+  rows:["........","..kkkkkk",".kmmmmma","kmllmmma","kmlmmmma","kmmaaaaa","kmmaaaaa","kmmmmmma",".kmmmmma",".kmmmmma","..kmmmma","...kmmma","....kmma",".....kka","......kk","........"]},
+ "potion":{pal:{"k":"#14161e","m":"#e03a3a","l":"#ff9a9a","d":"#8a5a30","w":"#dfe8f0"},
+  rows:["........","......kd","......kd",".....kww",".....kmm","....kmmm","...kmlmm","...kmlmm","...kmmmm","...kmmmm","...kmmmm","....kmmm",".....kkk","........","........","........"]},
+ "scroll":{pal:{"k":"#14161e","p":"#efe3c0","l":"#cdbd90","d":"#6b5a3a","m":"#3ec6e8"},
+  rows:["........","........","..kkkkkk",".kllllll",".kllpppp",".klpdddd",".klppppp",".klpdddd",".klppmmm",".kllpmmm",".kllllll","..kkkkkk","........","........","........","........"]},
+ "coins":{pal:{"k":"#3a2a08","y":"#f2c230","l":"#fff0a0","d":"#b8860b"},
+  rows:["........","........","........","........","........","........","........","....kkkk","...kyyyl","..kyyyyy",".kyylyyy",".kyyyyyd",".kdddddd",".kkkkkkk","........","........"]},
+ "stair_down":{pal:{"k":"#101018","m":"#6a6a78","v":"#0a0a10","e":"#ffd25a","s":"#3a3a46"},
+  rows:["kkkkkkkk","kmmmmmmm","kmkkkkkk","kmkvvvvv","kmksssss","kmkvvvvv","kmkvvvvv","kmksssss","kmkvvvvv","kmkeevvv","kmkveevv","kmkvveev","kmkvvvee","kmmmmmmm","kkkkkkkk","........"]},
+ "stair_up":{pal:{"k":"#101018","m":"#8a8a98","v":"#2a2a36","e":"#ffd25a","s":"#c4c4d0"},
+  rows:["kkkkkkkk","kmmmmmmm","kmkkkkkk","kmkvveev","kmkveevv","kmkeevvv","kmkvvvvv","kmkvvvvv","kmksssss","kmkvvvvv","kmkvvvvv","kmksssss","kmkvvvvv","kmmmmmmm","kkkkkkkk","........"]},
+ "sign_swords":{pal:{"k":"#14161e","l":"#e6ecf5","m":"#9fb0c8","g":"#d4a640"},
+  rows:["........",".lm.....","..lm....","...lm...","....lm..",".....lm.","......lm",".......l",".......l","......lm",".....lm.","....lm..","...lm...",".ggggm..",".g.g....","........"]},
+ "sign_cross":{pal:{"k":"#14161e","r":"#e03a3a","w":"#ffffff"},
+  rows:["........","......kk","......rr","......rr","......rr","..kkkkrr","..rrrrrr","..rrrrrr","..kkkkrr","......rr","......rr","......rr","......kk","........","........","........"]}
+};
+const TIER={
+ w:[{l:'#cfd4dc'},{l:'#cfd4dc'},{l:'#e6ecf5'},{l:'#e6ecf5'},{l:'#bfe3ff'},{l:'#bfe3ff'},{l:'#ffe9a8'},{l:'#9ff0ff'}],
+ a:[{m:'#c9b690',l:'#e8dcc0'},{m:'#8a5a30',l:'#b07a48'},{m:'#6e4a2a',l:'#9a9a9a'},{m:'#8a93a3',l:'#c4ccd8'},{m:'#5f7f9f',l:'#9fbfdf'},{m:'#c0c8d4',l:'#f0f4fa'},{m:'#3ec6e8',l:'#bff0ff'}],
+ s:[{m:'#8a5a30',l:'#b07a48'},{m:'#a0a8b4',l:'#d0d6de'},{m:'#5f7fbf',l:'#9fbfff'},{m:'#c0c8d4',l:'#f0f4fa'}],
+ p:[{m:'#e03a3a',l:'#ff9a9a'},{m:'#ff3acb',l:'#ffb0ee'},{m:'#3a7aff',l:'#9fc0ff'}],
+ c:[{m:'#3ec6e8'},{m:'#e0b040'},{m:'#b04adf'}]
+};
+const SHAPE={w:'sword',a:'tunic',s:'shield',p:'potion',c:'scroll'};
+const SIGN={smith:['sign_swords'],armor:['shield',TIER.s[3]],alch:['potion',{m:'#4adf7a',l:'#b0ffd0'}],healer:['sign_cross']};
 const SPRC={};
-function sprite(name){
- if(name in SPRC)return SPRC[name];
- const d=SPR[name];if(!d)return SPRC[name]=null;
+function sprite(name,over){
+ const key=over?name+JSON.stringify(over):name;
+ if(key in SPRC)return SPRC[key];
+ const d=SPR[name]||ART[name];if(!d)return SPRC[key]=null;
+ const pal=over?Object.assign({},d.pal,over):d.pal;
  const c=document.createElement('canvas');c.width=c.height=16;const x=c.getContext('2d');
- d.rows.forEach((row,y)=>{for(let i=0;i<8;i++){const ch=row[i];if(ch==='.')continue;x.fillStyle=d.pal[ch];x.fillRect(i,y,1,1);x.fillRect(15-i,y,1,1);}});
- return SPRC[name]=c;
+ d.rows.forEach((row,y)=>{for(let i=0;i<8;i++){const ch=row[i];if(ch==='.')continue;x.fillStyle=pal[ch];x.fillRect(i,y,1,1);x.fillRect(15-i,y,1,1);}});
+ return SPRC[key]=c;
 }
+const itemSprite=it=>sprite(SHAPE[it.k],TIER[it.k][it.i]);
+const itemIcon=it=>{const c=itemSprite(it);return c?`<img class="ico" alt="" src="${c.toDataURL()}">`:'';};
+function blit(sp,px,py){ctx.imageSmoothingEnabled=false;ctx.drawImage(sp,px,py,TS,TS);}
 const CAT={
  w:[{name:'Dagger',min:2,max:4,price:20},{name:'Short Sword',min:3,max:6,price:60},{name:'Hand Axe',min:4,max:8,price:120},{name:'Long Sword',min:5,max:10,price:220},{name:'War Hammer',min:6,max:13,price:360},{name:'Battle Axe',min:8,max:15,price:550},{name:'Broadsword',min:10,max:18,price:800},{name:'Windblade',min:12,max:22,price:1200}],
  a:[{name:'Cloth Tunic',ar:1,price:15},{name:'Leather Armor',ar:2,price:50},{name:'Studded Leather',ar:3,price:110},{name:'Chain Mail',ar:5,price:240},{name:'Scale Mail',ar:7,price:420},{name:'Plate Armor',ar:9,price:700},{name:'Gale Plate',ar:12,price:1100}],
@@ -149,10 +189,10 @@ const STOCK={
  alch:[['p',0],['p',1],['p',2],['c',0],['c',1],['c',2]]
 };
 const SHOPINFO={
- smith:{title:"Harrow's Smithy",sell:'w',sign:'W'},
- armor:{title:'The Iron Sparrow Armory',sell:'as',sign:'A'},
- alch:{title:'Mistmoor Alchemist',sell:'pc',sign:'P'},
- healer:{title:'Temple of the Quiet Wind',sell:'',sign:'+'}
+ smith:{title:"Harrow's Smithy",sell:'w'},
+ armor:{title:'The Iron Sparrow Armory',sell:'as'},
+ alch:{title:'Mistmoor Alchemist',sell:'pc'},
+ healer:{title:'Temple of the Quiet Wind',sell:''}
 };
 const SPELLS=[
  {id:'missile',n:'Missile',mp:3,lvl:1},
@@ -332,12 +372,11 @@ function drawTile(L,t,x,y,px,py){
   case T.WALL:R(town?'#8a5a3a':'#4b4b5c',0,0,TS,TS);R(town?'#6b4128':'#363644',0,TS/2-1,TS,2);
    R(town?'#6b4128':'#363644',v%2?8:20,0,2,TS/2);R(town?'#6b4128':'#363644',v%2?20:8,TS/2,2,TS/2);break;
   case T.TREE:R('#2f6b2f',0,0,TS,TS);R('#4a3320',13,18,6,12);R('#1d4d1d',4,2,24,20);R('#276627',9,5,10,8);break;
-  case T.DOOR:{R('#8a5a3a',0,0,TS,TS);R('#4a2f18',6,4,20,28);glyph(SHOPINFO[L.shops[x+','+y]].sign,'#fd8',px,py,20);break;}
-  case T.DOWN:R(town?'#1a1410':'#2a2a34',0,0,TS,TS);glyph('>',town?'#c96':'#fd6',px,py,26);break;
-  case T.UP:R('#2a2a34',0,0,TS,TS);glyph('<','#fd6',px,py,26);break;
+  case T.DOOR:{R('#8a5a3a',0,0,TS,TS);R('#4a2f18',6,4,20,28);const sg=SIGN[L.shops[x+','+y]];blit(sprite(sg[0],sg[1]),px,py);break;}
+  case T.DOWN:R(town?'#1a1410':'#2a2a34',0,0,TS,TS);blit(sprite('stair_down'),px,py);break;
+  case T.UP:R('#2a2a34',0,0,TS,TS);blit(sprite('stair_up'),px,py);break;
  }
 }
-const IGLYPH={w:['/','#ccd'],a:['[','#9bd'],s:[')','#db8'],p:['!','#f6a'],c:['?','#fe8']};
 function draw(){
  const L=cur(),p=G.p;
  const cx=clamp(p.x-(VW>>1),0,Math.max(0,L.w-VW)),cy=clamp(p.y-(VH>>1),0,Math.max(0,L.h-VH));
@@ -351,7 +390,9 @@ function draw(){
  }
  for(const it of L.items){
   const vx=it.x-cx,vy=it.y-cy;if(vx<0||vy<0||vx>=VW||vy>=VH||!vis[it.y*L.w+it.x])continue;
-  if(it.gold)glyph('$','#fd4',vx*TS,vy*TS,22);else{const g=IGLYPH[it.item.k];glyph(g[0],g[1],vx*TS,vy*TS,22);}
+  ctx.fillStyle='rgba(0,0,0,.3)';ctx.beginPath();ctx.ellipse(vx*TS+TS/2,vy*TS+TS-4,9,2.5,0,0,7);ctx.fill();
+  blit(it.gold?sprite('coins'):itemSprite(it.item),vx*TS,vy*TS);
+  if(it.item&&it.item.b>0){ctx.fillStyle='#9ff0ff';ctx.fillRect(vx*TS+TS-9,vy*TS+2,2,7);ctx.fillRect(vx*TS+TS-12,vy*TS+4,8,2);}
  }
  for(const m of L.mons){
   const vx=m.x-cx,vy=m.y-cy;if(vx<0||vy<0||vx>=VW||vy>=VH||!vis[m.y*L.w+m.x])continue;
@@ -368,8 +409,8 @@ function draw(){
   if(m.sleep)glyph('z','#9cf',vx*TS+10,vy*TS-10,12);
  }
  const px=(p.x-cx)*TS,py=(p.y-cy)*TS;
- ctx.fillStyle='#1d3d7a';ctx.beginPath();ctx.arc(px+TS/2,py+TS/2,13,0,7);ctx.fill();
- glyph('@','#fff',px,py,24);
+ ctx.fillStyle='rgba(0,0,0,.4)';ctx.beginPath();ctx.ellipse(px+TS/2,py+TS-3,11,3,0,0,7);ctx.fill();
+ blit(sprite('hero'),px,py);
 }
 
 /* ---------- movement / combat ---------- */
@@ -532,13 +573,13 @@ function openPack(){
  let h=`<div class="sum">Attack ${atkRange()} · Armor ${armorVal()} · Str ${p.str} · Mag ${p.mag} · ${p.gold}g</div><h4>Equipped</h4>`;
  for(const [s,l] of [['w','Weapon'],['a','Armor'],['s','Shield']]){
   const e=p.eq[s];
-  h+=`<div class="row"><span>${l}: ${e?itemName(e)+' <small>'+itemDesc(e)+'</small>':'<small>none</small>'}</span>${e?`<button data-a="unequip" data-s="${s}">Remove</button>`:''}</div>`;
+  h+=`<div class="row"><span>${l}: ${e?itemIcon(e)+itemName(e)+' <small>'+itemDesc(e)+'</small>':'<small>none</small>'}</span>${e?`<button data-a="unequip" data-s="${s}">Remove</button>`:''}</div>`;
  }
  h+=`<h4>Pack (${p.inv.length}/${MAXINV})</h4>`;
  if(!p.inv.length)h+='<small>Empty.</small>';
  p.inv.forEach((it,i)=>{
   const eq='was'.includes(it.k);
-  h+=`<div class="row"><span>${itemName(it)} <small>${itemDesc(it)}</small></span><span class="b2"><button data-a="${eq?'equip':'use'}" data-i="${i}">${eq?'Equip':'Use'}</button><button data-a="drop" data-i="${i}">Drop</button></span></div>`;
+  h+=`<div class="row"><span>${itemIcon(it)}${itemName(it)} <small>${itemDesc(it)}</small></span><span class="b2"><button data-a="${eq?'equip':'use'}" data-i="${i}">${eq?'Equip':'Use'}</button><button data-a="drop" data-i="${i}">Drop</button></span></div>`;
  });
  openModal('Pack',h,packAct);
 }
@@ -592,11 +633,11 @@ function renderShop(){
  }else{
   h+='<h4>For sale</h4>';
   STOCK[kind].forEach(([k,i],n)=>{const it={k,i,b:0},pr=price(it);
-   h+=`<div class="row"><span>${itemName(it)} <small>${itemDesc(it)}</small></span><button data-a="buy" data-n="${n}" ${p.gold<pr||p.inv.length>=MAXINV?'disabled':''}>${pr}g</button></div>`;});
+   h+=`<div class="row"><span>${itemIcon(it)}${itemName(it)} <small>${itemDesc(it)}</small></span><button data-a="buy" data-n="${n}" ${p.gold<pr||p.inv.length>=MAXINV?'disabled':''}>${pr}g</button></div>`;});
   h+='<h4>Sell (one third value)</h4>';
   let any=false;
   p.inv.forEach((it,i)=>{if(!info.sell.includes(it.k))return;any=true;
-   h+=`<div class="row"><span>${itemName(it)} <small>${itemDesc(it)}</small></span><button data-a="sell" data-i="${i}">${Math.floor(price(it)/3)}g</button></div>`;});
+   h+=`<div class="row"><span>${itemIcon(it)}${itemName(it)} <small>${itemDesc(it)}</small></span><button data-a="sell" data-i="${i}">${Math.floor(price(it)/3)}g</button></div>`;});
   if(!any)h+='<small>Nothing they want.</small>';
  }
  openModal(info.title,h,shopAct);
@@ -614,7 +655,7 @@ function showHelp(){
  openModal('How to play',`<p>Windhallow's wells run dry and its nights howl. Descend into the <b>Keep of the Gales</b>, grow strong, and slay the <b>Gale Wyrm</b> on depth ${MAXD}.</p>
  <p><b>Move/attack:</b> tap or click a tile to walk there (tap an adjacent monster to attack). Keys: arrows, WASD, vi-keys, numpad.<br>
  <b>.</b> wait · <b>1–4</b> spells · <b>I</b> pack · <b>Q</b> quaff healing · <b>&gt;</b>/<b>&lt;</b> use stairs.</p>
- <p>Shops are marked on the doors: <b>W</b> weapons, <b>A</b> armor, <b>P</b> potions &amp; scrolls, <b>+</b> healing temple. Sell loot you don't need. A <b>Scroll of Town Portal</b> read in the Keep takes you home; read it in the village to return to your deepest level.</p>
+ <p>Shops are marked on the doors: crossed swords (weapons), a shield (armor), a green flask (potions &amp; scrolls), a red cross (healing temple). Sell loot you don't need. A <b>Scroll of Town Portal</b> read in the Keep takes you home; read it in the village to return to your deepest level.</p>
  <p>The game saves automatically in this browser. Death is permanent. Full details: <a href="manual.html" style="color:#9cf">manual</a> (works offline; also under Menu).</p><button data-a="ok">Begin</button>`,()=>closeModal());
 }
 function showMenu(){
