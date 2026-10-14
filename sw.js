@@ -1,7 +1,7 @@
 // Bump CACHE whenever the shipped files change so old caches are purged.
-const CACHE = 'keep-of-the-gales-v6';
+const CACHE = 'keep-of-the-gales-v7';
 const FILES = [
-  './', 'index.html', 'manifest.json',
+  './', 'index.html', 'manual.html', 'manifest.json',
   'icon.svg', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png',
   'apple-touch-icon.png', 'favicon.ico'
 ];

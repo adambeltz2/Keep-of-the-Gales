@@ -72,7 +72,6 @@ button:active{background:#34405a}button:disabled{opacity:.4}
 <script>
 'use strict';
 /* ===== Keep of the Gales — a small Castle-of-the-Winds-style roguelike ===== */
-const MANUAL_URL='https://github.com/adambeltz2/Keep-of-the-Gales#manual';
 const TS=32,VW=15,VH=13,MAXD=8,MAXINV=24,KEY='keep-of-the-gales-v1';
 const $=s=>document.querySelector(s);
 const cv=$('#cv'),ctx=cv.getContext('2d');
@@ -571,12 +570,12 @@ function showHelp(){
  <p><b>Move/attack:</b> tap or click a tile to walk there (tap an adjacent monster to attack). Keys: arrows, WASD, vi-keys, numpad.<br>
  <b>.</b> wait · <b>1–4</b> spells · <b>I</b> pack · <b>Q</b> quaff healing · <b>&gt;</b>/<b>&lt;</b> use stairs.</p>
  <p>Shops are marked on the doors: <b>W</b> weapons, <b>A</b> armor, <b>P</b> potions &amp; scrolls, <b>+</b> healing temple. Sell loot you don't need. A <b>Scroll of Town Portal</b> read in the Keep takes you home; read it in the village to return to your deepest level.</p>
- <p>The game saves automatically in this browser. Death is permanent. Full details: <a href="${MANUAL_URL}" target="_blank" rel="noopener" style="color:#9cf">manual</a> (also under Menu).</p><button data-a="ok">Begin</button>`,()=>closeModal());
+ <p>The game saves automatically in this browser. Death is permanent. Full details: <a href="manual.html" style="color:#9cf">manual</a> (works offline; also under Menu).</p><button data-a="ok">Begin</button>`,()=>closeModal());
 }
 function showMenu(){
- openModal('Menu',`<div class="row"><button data-a="help">How to play</button><button data-a="manual">Full manual</button><button data-a="new">New Game</button></div><p class="sum"><small>The full manual opens on GitHub in a new tab (needs a connection).</small></p>`,(a)=>{
+ openModal('Menu',`<div class="row"><button data-a="help">How to play</button><button data-a="manual">Full manual</button><button data-a="new">New Game</button></div>`,(a)=>{
   if(a==='help')showHelp();
-  else if(a==='manual')window.open(MANUAL_URL,'_blank','noopener');
+  else if(a==='manual')location.href='manual.html';
   else if(a==='new'){if(confirm('Abandon this hero and start over?'))newGame();}
  });
 }

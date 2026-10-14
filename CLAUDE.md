@@ -34,7 +34,8 @@ Act as a senior software engineer and technical investigator. Optimize for corre
 *   **Secrets:** Never expose secrets, API keys, or hardcoded credentials in source code, logs, or commits. Treat security as a first-class concern.
 
 ## 7. Project Rules (Keep of the Gales)
-*   **Cache Bump:** Any change to a shipped file (`index.html`, `manifest.json`, icons, `sw.js` file list) requires bumping `CACHE` in `sw.js`, and adding any new shipped file to `FILES` in `sw.js`.
+*   **Manual:** The player manual's source is the `## Manual` section of `README.md`. After editing it, run `python3 tools/build-manual.py` to regenerate the offline `manual.html` (PWA-08 fails if it is stale). The manual must stay accurate to the game's numbers.
+*   **Cache Bump:** Any change to a shipped file (`index.html`, `manual.html`, `manifest.json`, icons, `sw.js` file list) requires bumping `CACHE` in `sw.js`, and adding any new shipped file to `FILES` in `sw.js`.
 *   **Tests Gate Deploys:** Run `npm test` and require all scenarios to pass before pushing to `main`. Add or update a scenario in `tests/regression.test.cjs` for every behavior change or bug fix, using the existing ID scheme (PWA, NEW, SHOP, LVL, CMB, ITM, UI, SAV, SOAK) and update the scenario table in `README.md`.
 *   **Original Content Only:** Do not use Castle of the Winds assets, names, text, or art. Monsters, items, and story are original.
 *   **Phone-First UI:** Every feature must work by touch alone (no keyboard-only actions), with no horizontal page scroll at 360px width.

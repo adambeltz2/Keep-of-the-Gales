@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0d0f14">
+<title>Keep of the Gales Manual</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:#0d0f14;color:#dde;font:16px/1.55 system-ui,sans-serif}
+main{max-width:760px;margin:0 auto;padding:12px 16px 48px}
+.top{position:sticky;top:0;background:#0d0f14ee;padding:10px 0;border-bottom:1px solid #2a3144;z-index:2}
+a{color:#9cf}
+.btn{display:inline-block;background:#252b3a;color:#dde;border:1px solid #3a4258;border-radius:6px;padding:8px 14px;text-decoration:none}
+h1{font-size:1.6rem;margin:1rem 0 .25rem}
+h2{font-size:1.15rem;margin:2rem 0 .4rem;color:#9ab;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid #222a3a;padding-bottom:.2rem}
+p,li{max-width:70ch}
+code{background:#1a2030;border:1px solid #2a3144;border-radius:4px;padding:0 .3em;font-size:.9em}
+.scroll{overflow-x:auto;margin:.6rem 0}
+table{border-collapse:collapse;min-width:100%;font-size:.92rem}
+th,td{border-bottom:1px solid #222a3a;padding:6px 10px;text-align:left;vertical-align:top}
+th{color:#9ab;font-weight:600;background:#12151c}
+</style>
+</head>
+<body>
+<main>
+<div class="top"><a class="btn" href="index.html">&larr; Back to game</a></div>
+<h1>Keep of the Gales: Manual</h1>
+<h2>Goal</h2>
+<p>The wells of Windhallow have run dry and the nights howl. Buy gear, descend the <strong>Keep of the Gales</strong> (8 levels), and kill the <strong>Gale Wyrm</strong> waiting on depth 8. Killing it wins the game; you can keep playing afterwards. There is one hero and one save slot, and death is permanent.</p>
+<h2>The turn system</h2>
+<p>The game is turn-based: nothing moves until you act. Moving, attacking, waiting, casting, quaffing, equipping and using scrolls each take one turn. Opening the pack, shops and menus is free. Every 7 turns you regain 1 HP and every 5 turns 1 MP.</p>
+<h2>Controls</h2>
+<div class="scroll"><table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Touch</th>
+<th>Keyboard</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Move / attack</td>
+<td>Tap an adjacent tile, or the d-pad</td>
+<td>Arrows, WASD, vi-keys (<code>h j k l y u b n</code>), numpad</td>
+</tr>
+<tr>
+<td>Auto-walk</td>
+<td>Tap any explored tile; walking stops when an awake monster is in view or you are hit</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Wait a turn</td>
+<td><code>Wait</code>, or the centre d-pad button</td>
+<td><code>.</code> or <code>Space</code></td>
+</tr>
+<tr>
+<td>Cast a spell</td>
+<td>Spell buttons under the map</td>
+<td><code>1</code>-<code>4</code></td>
+</tr>
+<tr>
+<td>Open pack</td>
+<td><code>Pack</code></td>
+<td><code>I</code></td>
+</tr>
+<tr>
+<td>Quaff best-fit healing potion</td>
+<td><code>Quaff</code></td>
+<td><code>Q</code></td>
+</tr>
+<tr>
+<td>Use stairs</td>
+<td><code>Stairs</code>, or walk onto them</td>
+<td><code>&gt;</code> / <code>&lt;</code></td>
+</tr>
+<tr>
+<td>Menu (how to play, manual, new game)</td>
+<td><code>Menu</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td>Close a window</td>
+<td>✕</td>
+<td><code>Esc</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>Moving into a monster attacks it. Moving into a shop door opens that shop. Tapping the tile you stand on uses stairs or waits.</p>
+<h2>Your hero</h2>
+<ul>
+<li><strong>Level-ups:</strong> you need <code>10 x L^2 + 20 x L</code> total XP to leave level <code>L</code> (30 XP for level 2). Each level gives +8 max HP, +3 max MP, +1 Strength, +1 Magic, plus a small free heal (10 HP, 5 MP).</li>
+<li><strong>Melee damage:</strong> weapon damage + the weapon's enchantment + <code>floor((Strength - 10) / 3)</code>. You hit 85% of the time.</li>
+<li><strong>Armor:</strong> armor and shield values add up. Each time a monster hits you, damage is reduced by a random amount from 0 up to your total armor (minimum 1 damage).</li>
+<li><strong>Pack:</strong> holds 24 items. Equipment slots: weapon, armor, shield (not counted in the 24).</li>
+</ul>
+<h2>Spells</h2>
+<div class="scroll"><table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Spell</th>
+<th>Learned</th>
+<th>MP</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Missile</td>
+<td>level 1</td>
+<td>3</td>
+<td>Hits the nearest visible monster for <code>4 + Magic/2 + 0-4</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Heal</td>
+<td>level 2</td>
+<td>5</td>
+<td>Restores <code>10 + Magic</code> HP</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Blink</td>
+<td>level 4</td>
+<td>4</td>
+<td>Teleports you to a random spot 3-7 tiles away</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Chain Bolt</td>
+<td>level 6</td>
+<td>9</td>
+<td>Hits up to 3 visible monsters for <code>8 + Magic/2 + 0-6</code> each</td>
+</tr>
+</tbody>
+</table></div>
+<p>Spell buttons appear as you learn them; the key number is the button's position. A spell needs enough MP and (for attacks) a visible target within about 8 tiles, otherwise no mana is spent.</p>
+<h2>The village of Windhallow</h2>
+<p>Doors carry a sign: <strong>W</strong> Harrow's Smithy (weapons), <strong>A</strong> Iron Sparrow Armory (armor and shields), <strong>P</strong> Mistmoor Alchemist (potions and scrolls), <strong>+</strong> Temple of the Quiet Wind (heals all HP and MP for <code>10 + 5 x level</code> gold). Shops pay <strong>one third</strong> of an item's value and only buy their own kind of goods. Enchanted items (<code>+1</code>, <code>+2</code>...) are worth more. Magic scrolls fizzle in the village, except Town Portal.</p>
+<p>The staircase at the bottom of the village leads down into the Keep.</p>
+<h2>The Keep</h2>
+<p>Levels are generated fresh the first time you enter them, then remembered. You see 8 tiles in line of sight; explored tiles stay on the map. Stairs <code>&gt;</code> go down, <code>&lt;</code> go up. Monsters get tougher with depth. Many start asleep: they can wake each turn you stand within about 4 tiles, and always wake when you attack them. Fast monsters (jackals, dire wolves) act twice per turn.</p>
+<h2>Gear</h2>
+<div class="scroll"><table>
+<thead>
+<tr>
+<th>Weapon</th>
+<th>Damage</th>
+<th>Price</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dagger</td>
+<td>2-4</td>
+<td>20</td>
+</tr>
+<tr>
+<td>Short Sword</td>
+<td>3-6</td>
+<td>60</td>
+</tr>
+<tr>
+<td>Hand Axe</td>
+<td>4-8</td>
+<td>120</td>
+</tr>
+<tr>
+<td>Long Sword</td>
+<td>5-10</td>
+<td>220</td>
+</tr>
+<tr>
+<td>War Hammer</td>
+<td>6-13</td>
+<td>360</td>
+</tr>
+<tr>
+<td>Battle Axe</td>
+<td>8-15</td>
+<td>550</td>
+</tr>
+<tr>
+<td>Broadsword</td>
+<td>10-18</td>
+<td>800 (found only)</td>
+</tr>
+<tr>
+<td>Windblade</td>
+<td>12-22</td>
+<td>1200 (found only)</td>
+</tr>
+</tbody>
+</table></div>
+<div class="scroll"><table>
+<thead>
+<tr>
+<th>Armor</th>
+<th>Value</th>
+<th>Price</th>
+<th></th>
+<th>Shield</th>
+<th>Value</th>
+<th>Price</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cloth Tunic</td>
+<td>1</td>
+<td>15</td>
+<td></td>
+<td>Buckler</td>
+<td>1</td>
+<td>30</td>
+</tr>
+<tr>
+<td>Leather Armor</td>
+<td>2</td>
+<td>50</td>
+<td></td>
+<td>Round Shield</td>
+<td>2</td>
+<td>80</td>
+</tr>
+<tr>
+<td>Studded Leather</td>
+<td>3</td>
+<td>110</td>
+<td></td>
+<td>Kite Shield</td>
+<td>3</td>
+<td>180</td>
+</tr>
+<tr>
+<td>Chain Mail</td>
+<td>5</td>
+<td>240</td>
+<td></td>
+<td>Tower Shield</td>
+<td>5</td>
+<td>400</td>
+</tr>
+<tr>
+<td>Scale Mail</td>
+<td>7</td>
+<td>420</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Plate Armor</td>
+<td>9</td>
+<td>700</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Gale Plate</td>
+<td>12</td>
+<td>1100 (found only)</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<div class="scroll"><table>
+<thead>
+<tr>
+<th>Consumable</th>
+<th>Effect</th>
+<th>Price</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Potion of Healing</td>
+<td>+30 HP</td>
+<td>30</td>
+</tr>
+<tr>
+<td>Potion of Greater Healing</td>
+<td>+80 HP</td>
+<td>90</td>
+</tr>
+<tr>
+<td>Potion of Mana</td>
+<td>+20 MP</td>
+<td>40</td>
+</tr>
+<tr>
+<td>Scroll of Town Portal</td>
+<td>In the Keep: jump to the village. In the village: return to the depth you left</td>
+<td>60</td>
+</tr>
+<tr>
+<td>Scroll of Magic Mapping</td>
+<td>Reveals the whole level</td>
+<td>50</td>
+</tr>
+<tr>
+<td>Scroll of Teleport</td>
+<td>Moves you to a random floor tile</td>
+<td>40</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>Quaff</code> (or <code>Q</code>) drinks the smallest healing potion that covers the HP you are missing, or your biggest one if none does.</p>
+<h2>Bestiary</h2>
+<div class="scroll"><table>
+<thead>
+<tr>
+<th>Monster</th>
+<th>First seen</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Giant Rat, Kobold</td>
+<td>depth 1</td>
+<td>Weak; good XP for a new hero</td>
+</tr>
+<tr>
+<td>Jackal</td>
+<td>depth 1</td>
+<td>Fast: two actions per turn</td>
+</tr>
+<tr>
+<td>Goblin</td>
+<td>depth 2</td>
+<td></td>
+</tr>
+<tr>
+<td>Giant Spider, Skeleton</td>
+<td>depth 3</td>
+<td></td>
+</tr>
+<tr>
+<td>Orc</td>
+<td>depth 4</td>
+<td></td>
+</tr>
+<tr>
+<td>Dire Wolf</td>
+<td>depth 4</td>
+<td>Fast</td>
+</tr>
+<tr>
+<td>Ogre</td>
+<td>depth 5</td>
+<td>Heavy hitter</td>
+</tr>
+<tr>
+<td>Wraith, Troll</td>
+<td>depth 6</td>
+<td></td>
+</tr>
+<tr>
+<td>Stone Golem</td>
+<td>depth 7</td>
+<td>85 HP</td>
+</tr>
+<tr>
+<td><strong>Gale Wyrm</strong></td>
+<td>depth 8</td>
+<td>Boss, 200 HP. Starts asleep. Breathes a howling gale every few turns from up to 6 tiles away (8-14 damage, reduced by half your armor) and bites hard in melee</td>
+</tr>
+</tbody>
+</table></div>
+<p>Monsters drop gold, and sometimes items. Gold and items on the floor are picked up by walking over them (a full pack leaves the item behind).</p>
+<h2>Tips</h2>
+<ul>
+<li>Spend your starting 100 gold on armor first. Leather Armor (50) plus a Buckler (30) makes depth 1 much safer.</li>
+<li>Fight in corridors so only one monster can reach you.</li>
+<li>Always carry a <strong>Scroll of Town Portal</strong>: read it when hurt, heal and shop, read another to return exactly where you left.</li>
+<li>Sell weapons and armor you have outgrown to fund potions.</li>
+<li>Before depth 8, have 4+ healing potions, a heavy armor set, and at least level 8.</li>
+<li>Chain Bolt is the best answer to packs; Heal costs a turn, so use it between fights, not during a brawl.</li>
+</ul>
+<h2>Saving and resetting</h2>
+<p>The game autosaves after every turn in this browser (local storage). Clearing site data deletes the save. <strong>Menu → New Game</strong> abandons the current hero.</p>
+<p><a class="btn" href="index.html">&larr; Back to game</a></p>
+</main>
+</body>
+</html>

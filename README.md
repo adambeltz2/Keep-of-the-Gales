@@ -31,7 +31,7 @@ Open the link above in Chrome on Android, then use the menu → **Install app** 
 
 ## Manual
 
-Direct link: <a href="https://github.com/adambeltz2/Keep-of-the-Gales#manual" target="_blank" rel="noopener">Full manual</a> (also reachable in game from **Menu → Full manual**).
+Direct link: <a href="https://adambeltz2.github.io/Keep-of-the-Gales/manual.html" target="_blank" rel="noopener">manual.html</a>, which works offline. In game, open it from **Menu → Full manual**. This section is the source: `manual.html` is generated from it by `python3 tools/build-manual.py` (needs the `markdown` package).
 
 ### Goal
 
@@ -171,19 +171,19 @@ Scenarios (deterministic seeded RNG where outcomes depend on chance):
 
 | Area | ID | What it protects |
 | --- | --- | --- |
-| PWA | PWA-01..07 | loads without JS errors; favicon / apple-touch / manifest links resolve; manifest is installable (192, 512 and maskable PNGs with real sizes); service worker precaches every file; **works offline after reload**; old caches purged on upgrade; no horizontal scroll on phones |
+| PWA | PWA-01..08 | loads without JS errors; favicon / apple-touch / manifest links resolve; manifest is installable (192, 512 and maskable PNGs with real sizes); service worker precaches every file; **works offline after reload**, including the manual; manual.html in sync with this README; old caches purged on upgrade; no horizontal scroll on phones |
 | New game | NEW-01..02 | starting stats and kit; village shops and stairs reachable |
 | Shops | SHOP-01..06 | buy / sell maths, category limits, healer pricing, full pack, shop doors |
 | Levels | LVL-01..04 | stairs round-trip; every level 1–8 connected and sanely populated across many seeds; depth-appropriate monsters; levels persist |
 | Combat | CMB-01..08 | kills and XP, level-ups and spell unlocks, every spell, armor, sleeping/awake AI, death and restart, **winning the game** |
 | Items | ITM-01..07 | potions, pickup / drop / full pack, Town Portal both ways, mapping, teleport |
-| UI | UI-01..06 | keyboard, click-to-walk (and stopping for hostiles), touch controls, HUD and log, menu, manual link |
+| UI | UI-01..06 | keyboard, click-to-walk (and stopping for hostiles), touch controls, HUD and log, menu, manual link and back link |
 | Saves | SAV-01..04 | exact reload round-trip, corrupt or old saves, no-`localStorage` mode, new game |
 | Soak | SOAK-01 | 50 random games × 1200 actions: no exceptions, no player-in-wall, stats in range |
 
 ## Files
 
-`CLAUDE.md` holds the agent/contributor rules and `backlog.md` the deferred ideas. `index.html` is the whole game. `sw.js` and `manifest.json` provide offline play and installability; `icon*.png/svg`, `apple-touch-icon.png` and `favicon.ico` are the icons, generated as 32×32 pixel art by `tools/make-icons.py` (needs Pillow; `python3 tools/make-icons.py wyrm` swaps the character: `champion` (current), `wyrm`, `skeleton`, `ogre`). When you change any shipped file, bump `CACHE` in `sw.js` so installed copies refresh.
+`CLAUDE.md` holds the agent/contributor rules and `backlog.md` the deferred ideas. `index.html` is the whole game; `manual.html` is the offline manual (generated). `sw.js` and `manifest.json` provide offline play and installability; `icon*.png/svg`, `apple-touch-icon.png` and `favicon.ico` are the icons, generated as 32×32 pixel art by `tools/make-icons.py` (needs Pillow; `python3 tools/make-icons.py wyrm` swaps the character: `champion` (current), `wyrm`, `skeleton`, `ogre`). When you change any shipped file, bump `CACHE` in `sw.js` so installed copies refresh.
 
 ## Deploying
 

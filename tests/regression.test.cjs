@@ -110,7 +110,7 @@ test('PWA-04 service worker installs, controls the page, and precaches every shi
   const names = Object.keys(cached);
   eq(names.length, 1, 'exactly one cache after activation');
   const files = cached[names[0]];
-  for (const f of ['index.html', 'manifest.json', 'icon.svg', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'apple-touch-icon.png', 'favicon.ico', 'sw.js'].filter(f => f !== 'sw.js'))
+  for (const f of ['index.html', 'manual.html', 'manifest.json', 'icon.svg', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'apple-touch-icon.png', 'favicon.ico', 'sw.js'].filter(f => f !== 'sw.js'))
     assert(files.some(p => p.endsWith('/' + f)), `${f} not precached`);
   await ctx.close();
 });
@@ -129,6 +129,10 @@ test('PWA-05 works offline: reload with the network cut still renders and plays'
   await page.evaluate(() => act(0, -1));
   const after = await page.evaluate(() => [G.p.x, G.p.y]);
   assert(before[0] !== after[0] || before[1] !== after[1], 'player did not move offline');
+  await page.goto(base + '/manual.html');
+  assert((await page.textContent('h1')).includes('Manual'), 'manual did not render offline');
+  assert((await page.locator('table').count()) >= 5, 'manual tables missing offline');
+  await page.click('a.btn'); await page.waitForFunction(() => typeof G !== 'undefined' && G && G.p);
   eq(page.errors, []);
   await ctx.close();
 });
@@ -153,6 +157,12 @@ test('PWA-07 layout: no horizontal scroll at phone width, d-pad shown on touch d
   assert(await ev(page, () => document.documentElement.scrollWidth <= innerWidth), 'horizontal overflow');
   assert(await ev(page, () => getComputedStyle(document.getElementById('pad')).display !== 'none'), 'd-pad hidden on touch');
   await ctx.close();
+});
+
+test('PWA-08 manual.html is generated from the README manual and is up to date', async () => {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync('python3', [path.join(ROOT, 'tools', 'build-manual.py'), '--check']);
+  assert(r.status === 0, 'manual.html is stale: run python3 tools/build-manual.py (' + String(r.stderr || '').trim() + ')');
 });
 
 /* ------------------------------------------------------------------ new game / village */
@@ -472,16 +482,17 @@ test('UI-05 how-to-play modal can be reopened from the menu', async () => {
   eq(await ev(page, () => $('#mtitle').textContent), 'How to play'); await done(page);
 });
 
-test('UI-06 Menu has a Full manual button that opens the README manual in a new tab; help modal links to it', async () => {
+test('UI-06 Menu -> Full manual opens the local manual page, which has a back link to the game', async () => {
   const page = await freshPage();
-  await ev(page, () => { window.__opened = []; window.open = (...a) => { window.__opened.push(a); return null; }; });
-  await page.click('#bar button[data-b=menu]'); await page.click('#mbody [data-a=manual]');
-  const opened = await ev(page, () => window.__opened);
-  eq(opened.length, 1); assert(/github\.com\/adambeltz2\/Keep-of-the-Gales#manual$/.test(opened[0][0]), opened[0][0]); eq(opened[0][1], '_blank');
+  await page.click('#bar button[data-b=menu]');
+  await Promise.all([page.waitForURL(/manual\.html$/), page.click('#mbody [data-a=manual]')]);
+  assert((await page.textContent('h1')).includes('Manual'), 'manual heading');
+  for (const h of ['Spells', 'Gear', 'Bestiary', 'Tips']) assert((await page.locator('h2', { hasText: h }).count()) > 0, 'missing section ' + h);
+  assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'manual overflows the phone width');
+  await Promise.all([page.waitForURL(/index\.html$/), page.click('a.btn')]);
+  await page.waitForFunction(() => typeof G !== 'undefined' && G && G.p);
   await ev(page, () => showHelp());
-  const a = await ev(page, () => { const l = document.querySelector('#mbody a'); return l && [l.href, l.target, l.rel]; });
-  assert(a && /#manual$/.test(a[0]) && a[1] === '_blank' && /noopener/.test(a[2]), JSON.stringify(a));
-  const readme = fs.readFileSync(path.join(ROOT, 'README.md'), 'utf8'); assert(/^## Manual$/m.test(readme), 'README is missing the "## Manual" heading the link targets');
+  const href = await ev(page, () => document.querySelector('#mbody a').getAttribute('href')); eq(href, 'manual.html');
   await done(page);
 });
 
