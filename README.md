@@ -61,7 +61,7 @@ Scenarios (deterministic seeded RNG where outcomes depend on chance):
 
 ## Files
 
-`CLAUDE.md` holds the agent/contributor rules and `backlog.md` the deferred ideas. `index.html` is the whole game. `sw.js` and `manifest.json` provide offline play and installability; `icon*.png/svg`, `apple-touch-icon.png` and `favicon.ico` are the icons. When you change any shipped file, bump `CACHE` in `sw.js` so installed copies refresh.
+`CLAUDE.md` holds the agent/contributor rules and `backlog.md` the deferred ideas. `index.html` is the whole game. `sw.js` and `manifest.json` provide offline play and installability; `icon*.png/svg`, `apple-touch-icon.png` and `favicon.ico` are the icons, generated as 32×32 pixel art by `tools/make-icons.py` (needs Pillow; `python3 tools/make-icons.py champion` swaps the character: `wyrm`, `champion`, `skeleton`, `ogre`). When you change any shipped file, bump `CACHE` in `sw.js` so installed copies refresh.
 
 ## Deploying
 
